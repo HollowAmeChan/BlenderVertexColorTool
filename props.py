@@ -34,7 +34,7 @@ def register():
 
         # 注册吸色模式布尔开关
         def changeGetColorMode(self, context):
-            if context.scene.ho_VertexColorViewMode:
+            if context.scene.ho_GetVertexColorViewMode:
                 bpy.ops.ho.entergetvertexcolorview()
             else:
                 bpy.ops.ho.quitgetvertexcolorview()

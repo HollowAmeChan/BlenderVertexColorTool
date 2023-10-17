@@ -354,6 +354,7 @@ class setMeshVertexColor(Operator):
     def execute(self, context):
         bpy.ops.paint.vertex_paint_toggle()
         context.object.data.use_paint_mask = True
+        context.tool_settings.vertex_paint.brush = bpy.data.brushes['Draw']
         bpy.data.brushes["Draw"].color = self.color
         bpy.ops.paint.vertex_color_set()
         bpy.ops.object.editmode_toggle()
@@ -455,6 +456,7 @@ class vertexGroup2RandomVertexColor(Operator):
                 # 赋予颜色
                 bpy.ops.paint.vertex_paint_toggle()
                 bpy.context.object.data.use_paint_mask = True
+                context.tool_settings.vertex_paint.brush = bpy.data.brushes['Draw']
                 bpy.data.brushes["Draw"].color = (
                     random.random(), random.random(), random.random())
                 bpy.ops.paint.vertex_color_set()
@@ -481,6 +483,9 @@ class vertexGroup2DefaultVertexColor(Operator):
 
         index = context.scene.ho_GroupPaintDefaultIndex
         mode = context.scene.ho_isGroupPaintMode
+
+        if obj == None:
+            return
         if mode == False:
             default_color = [
                 i.color for i in context.scene.ho_TempVertexColor[:]]
@@ -493,13 +498,25 @@ class vertexGroup2DefaultVertexColor(Operator):
         else:
             default_color = DEFAULT_COLOR_GROUP1
 
+        # 首先刷白此物体全部顶点色
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.paint.vertex_paint_toggle()
+        bpy.context.object.data.use_paint_mask = True
+        context.tool_settings.vertex_paint.brush = bpy.data.brushes['Draw']
+        bpy.data.brushes["Draw"].color = (0, 0, 0)
+        bpy.ops.paint.vertex_color_set()
+        bpy.ops.object.editmode_toggle()
+        # 逐顶点组操作
         bpy.ops.object.editmode_toggle()
         for i in range(len(vgroups)):
             selected_vgroup = vgroups[i]
 
-            # 检查顶点组是否存在
+            # 检查顶点组是否存在,颜色组是否存在
             if selected_vgroup is None:
-                return
+                return {'FINISHED'}
+            if len(default_color) == 0:
+                return {'FINISHED'}
             # 选择指定名称的顶点组所属的网格
             bpy.ops.object.mode_set(mode='OBJECT')
             bpy.ops.object.select_all(action='DESELECT')
@@ -514,6 +531,7 @@ class vertexGroup2DefaultVertexColor(Operator):
 
             bpy.ops.paint.vertex_paint_toggle()
             bpy.context.object.data.use_paint_mask = True
+            context.tool_settings.vertex_paint.brush = bpy.data.brushes['Draw']
             bpy.data.brushes["Draw"].color = default_color[i %
                                                            len(default_color)]
             bpy.ops.paint.vertex_color_set()

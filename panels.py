@@ -148,14 +148,14 @@ class VertexColorTool(Panel):
         row.prop(context.scene, "ho_isGroupPaintMode",
                  text="使用预设组", toggle=True)
         row.operator(
-            ops.vertexGroup2DefaultVertexColor.bl_idname, text="顶点组赋颜色组顶点色", icon="FUND")
+            ops.vertexGroup2DefaultVertexColor.bl_idname, text="顶点组赋颜色组", icon="FUND")
 
         layout.operator(
             ops.chooseSameVertexColorMesh.bl_idname, text="选择同顶点色面", icon="SEQUENCE_COLOR_01")
         layout.operator(
-            ops.vertexGroup2RandomVertexColor.bl_idname, text="根据顶点组赋随机顶点色")
+            ops.vertexGroup2RandomVertexColor.bl_idname, text="顶点组赋随机色")
         layout.operator(ops.vertexWeight2vertexColor.bl_idname,
-                        text="顶点权重到顶点色")
+                        text="权重到顶点色")
 
 
 cls = [VertexColorTool]

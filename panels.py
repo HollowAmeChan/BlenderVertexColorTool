@@ -37,6 +37,8 @@ class VertexColorTool(Panel):
         single.prop(context.scene, "ho_PaintTempVertexColor",
                     icon_only=True)  # 缓冲色
 
+        single = layout.row(align=True)
+        single.alignment = ("CENTER")
         change = single.operator(
             ops.changeTempVertexCol.bl_idname, text="", icon="EVENT_F")
         change.color = context.scene.ho_FrontTempVertexColor  # 切换为前景颜色
@@ -57,15 +59,18 @@ class VertexColorTool(Panel):
         # 前后景色设置
         single = layout.row(align=True)
 
+        single.prop(context.scene, "ho_FrontTempVertexColor", icon_only=True)
+        single.prop(context.scene, "ho_BackTempVertexColor", icon_only=True)
+
+        single = layout.row(align=True)
+        single.alignment = ("CENTER")
+
         change = single.operator(
             ops.setMeshVertexColor.bl_idname, text="", icon="GREASEPENCIL")
         change.color = context.scene.ho_FrontTempVertexColor
         change = single.operator(
             ops.setMeshVertexColor.bl_idname, text="", icon="OUTLINER_DATA_GP_LAYER")
         change.color = context.scene.ho_BackTempVertexColor
-
-        single.prop(context.scene, "ho_FrontTempVertexColor", icon_only=True)
-        single.prop(context.scene, "ho_BackTempVertexColor", icon_only=True)
 
         change = single.operator(
             ops.changeFBVertexCol.bl_idname, text="", icon="ARROW_LEFTRIGHT")

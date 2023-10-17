@@ -504,7 +504,7 @@ class vertexGroup2DefaultVertexColor(Operator):
         bpy.ops.paint.vertex_paint_toggle()
         bpy.context.object.data.use_paint_mask = True
         context.tool_settings.vertex_paint.brush = bpy.data.brushes['Draw']
-        bpy.data.brushes["Draw"].color = (0, 0, 0)
+        bpy.data.brushes["Draw"].color = (1, 1, 1)
         bpy.ops.paint.vertex_color_set()
         bpy.ops.object.editmode_toggle()
         # 逐顶点组操作

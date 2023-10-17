@@ -101,7 +101,7 @@ class clearTempVertexCol(Operator):
         return True
 
     def execute(self, context):
-        bpy.data.scenes[-1].ho_TempVertexColor.clear()
+        context.scene.ho_TempVertexColor.clear()
         return {'FINISHED'}
 
 
@@ -170,7 +170,7 @@ class clearDefaultVertexCol(Operator):
 
     def execute(self, context):
         context.scene.ho_GroupPaintDefaultIndex = 0
-        bpy.data.scenes[-1].ho_VertexColorCol.clear()
+        context.scene.ho_VertexColorCol.clear()
         return {'FINISHED'}
 
 
@@ -189,7 +189,7 @@ class changeDefaultVertexCol(Operator):
         return True
 
     def execute(self, context):
-        bpy.data.scenes[-1].ho_VertexColorCol[self.index].color = self.color
+        context.scene.ho_VertexColorCol[self.index].color = self.color
         return {'FINISHED'}
 
 
@@ -208,9 +208,9 @@ class set1DefaultVertexCol(Operator):
 
     def execute(self, context):
         context.scene.ho_GroupPaintDefaultIndex = 1
-        bpy.data.scenes[-1].ho_VertexColorCol.clear()
+        context.scene.ho_VertexColorCol.clear()
         for i in DEFAULT_COLOR_GROUP1:
-            vtx_color = bpy.data.scenes[-1].ho_VertexColorCol.add()
+            vtx_color = context.scene.ho_VertexColorCol.add()
             vtx_color.color = i
 
         return {'FINISHED'}
@@ -231,9 +231,9 @@ class set2DefaultVertexCol(Operator):
 
     def execute(self, context):
         context.scene.ho_GroupPaintDefaultIndex = 2
-        bpy.data.scenes[-1].ho_VertexColorCol.clear()
+        context.scene.ho_VertexColorCol.clear()
         for i in DEFAULT_COLOR_GROUP2:
-            vtx_color = bpy.data.scenes[-1].ho_VertexColorCol.add()
+            vtx_color = context.scene.ho_VertexColorCol.add()
             vtx_color.color = i
 
         return {'FINISHED'}
@@ -254,9 +254,9 @@ class set3DefaultVertexCol(Operator):
 
     def execute(self, context):
         context.scene.ho_GroupPaintDefaultIndex = 3
-        bpy.data.scenes[-1].ho_VertexColorCol.clear()
+        context.scene.ho_VertexColorCol.clear()
         for i in DEFAULT_COLOR_GROUP3:
-            vtx_color = bpy.data.scenes[-1].ho_VertexColorCol.add()
+            vtx_color = context.scene.ho_VertexColorCol.add()
             vtx_color.color = i
 
         return {'FINISHED'}

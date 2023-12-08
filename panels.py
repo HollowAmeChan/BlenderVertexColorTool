@@ -162,11 +162,70 @@ class VertexColorTool(Panel):
         layout.operator(ops.vertexWeight2vertexColor.bl_idname,
                         text="权重到顶点色")
 
+        # 顶点色层
+        # ----绘制顶点色层面板----
+        mesh = context.active_object.data
+        layout = self.layout
+        layout.label(text="顶点色列表")
+        row = layout.row()
+
+        col = row.column()
+        col.template_list(
+            "MESH_UL_color_attributes",
+            "color_attributes",
+            mesh,
+            "color_attributes",
+            mesh.color_attributes,
+            "active_color_index",
+            rows=3,
+        )
+
+        col = row.column(align=True)
+        col.operator("geometry.color_attribute_add", icon='ADD', text="")
+        col.operator("geometry.color_attribute_remove", icon='REMOVE', text="")
+
+        col.separator()
+
+        col.menu("MESH_MT_color_attribute_context_menu",
+                 icon='DOWNARROW_HLT', text="")
+        # ----层工具----
+        mesh = context.object.data
+        self.layout.label(text='合并通道')
+
+        def draw_color_override(key):
+            value = getattr(mesh, key)
+            layout = self.layout
+            if value in mesh.color_attributes and mesh.color_attributes[value].domain != 'CORNER':
+                layout = self.layout.box()
+                layout.label(
+                    text='Only Face Corner attributes are supported', icon='ERROR')
+            layout.prop_search(mesh, key, mesh, 'color_attributes')
+
+        draw_color_override('ho_vertex_color_combine_0')
+        draw_color_override('ho_vertex_color_combine_1')
+        draw_color_override('ho_vertex_color_combine_2')
+        draw_color_override('ho_vertex_color_combine_3')
+        draw_color_override('ho_vertex_color_combine_tgt')
+
+        layout = self.layout
+        layout.operator(ops.vertexColorChannelCombine.bl_idname, text="合并到目标层")
+
 
 cls = [VertexColorTool]
 
 
 def register():
+    bpy.types.Mesh.ho_vertex_color_combine_0 = bpy.props.StringProperty(
+        name='R')
+    bpy.types.Mesh.ho_vertex_color_combine_1 = bpy.props.StringProperty(
+        name='G')
+    bpy.types.Mesh.ho_vertex_color_combine_2 = bpy.props.StringProperty(
+        name='B')
+    bpy.types.Mesh.ho_vertex_color_combine_3 = bpy.props.StringProperty(
+        name='A')
+    bpy.types.Mesh.ho_vertex_color_combine_tgt = bpy.props.StringProperty(
+        name='Target')
+
     try:
         for i in cls:
             bpy.utils.register_class(i)

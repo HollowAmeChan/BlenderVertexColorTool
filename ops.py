@@ -557,6 +557,67 @@ class vertexWeight2vertexColor(Operator):
         return {'FINISHED'}
 
 
+class vertexColorChannelCombine(Operator):
+    """
+    合并四个顶点色层到另一个顶点色层
+    """
+    bl_idname = "ho.vertexcolorchannelcombine"
+    bl_label = "合并四个顶点色层到另一个顶点色层"
+
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def execute(self, context):
+        bpy.ops.object.mode_set(mode='OBJECT')
+        mesh = bpy.context.active_object.data
+        self.combine_vertexcolor_channel(
+            mesh.ho_vertex_color_combine_0,
+            mesh.ho_vertex_color_combine_1,
+            mesh.ho_vertex_color_combine_2,
+            mesh.ho_vertex_color_combine_3,
+            mesh.ho_vertex_color_combine_tgt,
+        )
+        return {'FINISHED'}
+
+    def combine_vertexcolor_channel(self, layerR, layerG, layerB, layerA, target):
+        r = 0.0
+        g = 0.0
+        b = 0.0
+        a = 1.0
+        if layerR:
+            atrR = bpy.context.active_object.data.color_attributes[layerR]
+            itemsR = atrR.data.items()[:]
+        if layerG:
+            atrG = bpy.context.active_object.data.color_attributes[layerG]
+            itemsG = atrG.data.items()[:]
+        if layerB:
+            atrB = bpy.context.active_object.data.color_attributes[layerB]
+            itemsB = atrB.data.items()[:]
+        if layerA:
+            atrA = bpy.context.active_object.data.color_attributes[layerA]
+            itemsA = atrA.data.items()[:]
+        if target:
+            atrTgt = bpy.context.active_object.data.color_attributes[target]
+            itemsTgt = atrTgt.data.items()[:]
+        if not target:
+            return
+
+        mesh = bpy.context.active_object.data
+        for poly in mesh.polygons:
+            for loop_index in poly.loop_indices:
+                if layerR:
+                    r = itemsR[loop_index][1].color_srgb[0]
+                if layerG:
+                    g = itemsG[loop_index][1].color_srgb[0]
+                if layerB:
+                    b = itemsB[loop_index][1].color_srgb[0]
+                if layerA:
+                    a = itemsA[loop_index][1].color_srgb[0]
+                combined_color = (r, g, b, a)
+                itemsTgt[loop_index][1].color_srgb = combined_color
+
+
 cls = [addTempVertexCol, removeTempVertexCol,
        changeTempVertexCol, changeFBVertexCol,
        clearDefaultVertexCol, changeDefaultVertexCol,
@@ -567,7 +628,8 @@ cls = [addTempVertexCol, removeTempVertexCol,
        enterVertexColorView, quitVertexColorView,
        enterGetVertexColorView, quitGetVertexColorView,
        setMeshVertexColor, chooseSameVertexColorMesh,
-       vertexGroup2RandomVertexColor, vertexGroup2DefaultVertexColor, vertexWeight2vertexColor]
+       vertexGroup2RandomVertexColor, vertexGroup2DefaultVertexColor, vertexWeight2vertexColor,
+       vertexColorChannelCombine]
 
 
 def register():

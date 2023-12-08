@@ -5,6 +5,7 @@ Features provided:
 - Mesh selection by vertex colour (only for vertex colours specified by face)
 - Fast vertex colour assignment by vertex group (can be random)
 - Three preset id mapping colour schemes are provided
+- Merge multiple vertex color layers into another vertex color layer (supports RGBA four-channel packing)
 
 一个方便的顶点色工具，可以加快id贴图的创建，在blender3.6版本开发，理论上支持3.1+版本。
 提供了的功能：
@@ -12,3 +13,4 @@ Features provided:
 - 按照顶点色选择网格（只适用于按面指定的顶点色）
 - 按照顶点组，快速指定顶点色（可以随机）
 - 提供了三种预设的id贴图颜色方案
+- 将多个顶点颜色层合并到另一个顶点颜色层（支持RGBA四个通道打包）

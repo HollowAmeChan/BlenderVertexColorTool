@@ -17,6 +17,9 @@ class VertexColorTool(Panel):
     paintNumber: bpy.props.IntProperty(default=1)
 
     def draw(self, context):
+        if context.active_object.type != "MESH":
+            return
+        
         # 手动模式
         layout = self.layout.column(align=True)
         layout.label(text="手动模式")

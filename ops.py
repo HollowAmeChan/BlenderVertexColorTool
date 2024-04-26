@@ -77,7 +77,7 @@ class removeTempVertexCol(Operator):
     bl_idname = "ho.removetempvertexcol"
     bl_label = "删除缓存颜色"
 
-    index: bpy.props.IntProperty()
+    index: bpy.props.IntProperty()  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -112,8 +112,8 @@ class changeTempVertexCol(Operator):
     bl_idname = "ho.changetempvertexcol"
     bl_label = "改变缓存颜色"
 
-    index: bpy.props.IntProperty()
-    color: bpy.props.FloatVectorProperty(size=3)
+    index: bpy.props.IntProperty()  # type: ignore
+    color: bpy.props.FloatVectorProperty(size=3)  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -131,8 +131,8 @@ class changeFBVertexCol(Operator):
     bl_idname = "ho.changefbvertexcol"
     bl_label = "对前背景颜色进行操作"
 
-    switch: bpy.props.BoolProperty(default=False)
-    refresh: bpy.props.BoolProperty(default=False)
+    switch: bpy.props.BoolProperty(default=False)  # type: ignore
+    refresh: bpy.props.BoolProperty(default=False)  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -181,8 +181,8 @@ class changeDefaultVertexCol(Operator):
     bl_idname = "ho.changedefaultvertexcol"
     bl_label = "改变预设颜色"
 
-    index: bpy.props.IntProperty()
-    color: bpy.props.FloatVectorProperty()
+    index: bpy.props.IntProperty()  # type: ignore
+    color: bpy.props.FloatVectorProperty()  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -200,7 +200,7 @@ class set1DefaultVertexCol(Operator):
     bl_idname = "ho.set1defaultvertexcol"
     bl_label = "清除预设颜色"
 
-    color_list: bpy.props.FloatVectorProperty()
+    color_list: bpy.props.FloatVectorProperty()  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -223,7 +223,7 @@ class set2DefaultVertexCol(Operator):
     bl_idname = "ho.set2defaultvertexcol"
     bl_label = "清除预设颜色"
 
-    color_list: bpy.props.FloatVectorProperty()
+    color_list: bpy.props.FloatVectorProperty()  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -246,7 +246,7 @@ class set3DefaultVertexCol(Operator):
     bl_idname = "ho.set3defaultvertexcol"
     bl_label = "清除预设颜色"
 
-    color_list: bpy.props.FloatVectorProperty()
+    color_list: bpy.props.FloatVectorProperty()  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -345,7 +345,7 @@ class setMeshVertexColor(Operator):
     bl_idname = "ho.setmeshvertexcolor"
     bl_label = "给选中网格指定顶点色"
 
-    color: bpy.props.FloatVectorProperty()
+    color: bpy.props.FloatVectorProperty()  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -368,12 +368,15 @@ class chooseSameVertexColorMesh(Operator):
     bl_idname = "ho.choosesamevertexcolormesh"
     bl_label = "选择同种顶点色的网格"
 
+    threshold: bpy.props.FloatProperty(
+        name="容差", description="选择同顶点色时的容差(通道共用容差)", default=0.01, max=1, min=0, step=0.01)  # type: ignore
+
     @classmethod
     def poll(cls, context):
         return True
 
     def execute(self, context):
-        threshold = .1
+        threshold = self.threshold
         obj = bpy.context.object
 
         bpy.ops.object.mode_set(mode="OBJECT")

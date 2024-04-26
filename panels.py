@@ -13,13 +13,10 @@ class VertexColorTool(Panel):
     bl_region_type = "UI"
     bl_category = "顶点色"
 
-    paintMode: bpy.props.BoolProperty(default=True)
-    paintNumber: bpy.props.IntProperty(default=1)
-
     def draw(self, context):
         if context.active_object.type != "MESH":
             return
-        
+
         # 手动模式
         layout = self.layout.column(align=True)
         layout.label(text="手动模式")
@@ -90,6 +87,7 @@ class VertexColorTool(Panel):
         # 缓冲自设颜色
         vc = context.scene.ho_TempVertexColor
         if vc:
+            layout.label(text="颜色组")
             col = layout.column(align=True)
             col.operator(ops.clearTempVertexCol.bl_idname,
                          text="", icon="TRASH")
@@ -125,9 +123,10 @@ class VertexColorTool(Panel):
                         text="", icon="EVENT_C")
 
         # 预设顶点颜色
-        layout = self.layout.column(align=True)
         vc = context.scene.ho_VertexColorCol
         if vc:
+            layout.label(text="预设组")
+            layout = self.layout.column(align=True)
             col = layout.column(align=True)
             for i in range(len(vc[:])):
                 # 每一行
@@ -157,9 +156,13 @@ class VertexColorTool(Panel):
                  text="使用预设组", toggle=True)
         row.operator(
             ops.vertexGroup2DefaultVertexColor.bl_idname, text="顶点组赋颜色组", icon="FUND")
+        row = layout.row(align=True)
 
-        layout.operator(
+        row.prop(context.scene, "ho_chooseSameVertexColorMeshThreshold", text="容差")
+        o = row.operator(
             ops.chooseSameVertexColorMesh.bl_idname, text="选择同顶点色面", icon="SEQUENCE_COLOR_01")
+        o.threshold = context.scene.ho_chooseSameVertexColorMeshThreshold
+
         layout.operator(
             ops.vertexGroup2RandomVertexColor.bl_idname, text="顶点组赋随机色")
         layout.operator(ops.vertexWeight2vertexColor.bl_idname,

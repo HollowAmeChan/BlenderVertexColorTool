@@ -3,9 +3,9 @@ from bpy.types import PropertyGroup
 
 
 class VertexColorCol(PropertyGroup):
-    index: bpy.props.IntProperty()
+    index: bpy.props.IntProperty()  # type: ignore
     color: bpy.props.FloatVectorProperty(
-        name="VertexColor", size=3, subtype='COLOR', default=(0, 0, 0), min=0, max=1)
+        name="VertexColor", size=3, subtype='COLOR', default=(0, 0, 0), min=0, max=1)  # type: ignore
 
 
 cls = [VertexColorCol]
@@ -54,6 +54,10 @@ def register():
             default=True)
         bpy.types.Scene.ho_GroupPaintDefaultIndex = bpy.props.IntProperty(
             default=1)
+
+        # 注册选择同顶点色的容差
+        bpy.types.Scene.ho_chooseSameVertexColorMeshThreshold = bpy.props.FloatProperty(
+            name="容差", description="选择同顶点色时的容差(通道共用容差)", default=0.01, max=1, min=0, step=0.01)
 
     except Exception:
         print("Props load failed!!!")

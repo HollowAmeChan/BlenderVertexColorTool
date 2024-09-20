@@ -22,6 +22,15 @@ def register():
         # 注册自建缓存顶点色集合
         bpy.types.Scene.ho_TempVertexColor = bpy.props.CollectionProperty(
             type=VertexColorCol)
+        # 注册功能区开关
+        bpy.types.Scene.ho_VertexColorPannel_BaseTools = bpy.props.BoolProperty(
+            default=True)
+        bpy.types.Scene.ho_VertexColorPannel_TemplateTools = bpy.props.BoolProperty(
+            default=False)
+        bpy.types.Scene.ho_VertexColorPannel_Utils = bpy.props.BoolProperty(
+            default=False)
+        bpy.types.Scene.ho_VertexColorPannel_Others = bpy.props.BoolProperty(
+            default=False)
 
         # 注册顶点色预览布尔开关
         def changeViewMode(self, context):
@@ -30,7 +39,8 @@ def register():
             else:
                 bpy.ops.ho.quitvertexcolorview()
         bpy.types.Scene.ho_VertexColorViewMode = bpy.props.BoolProperty(
-            default=False, update=changeViewMode)
+            default=False, description="!!!注意!!!预览模式是原生blender的预览,颜色不正常没有经过伽马矫正,请去材质中使用顶点色并连接伽马节点,参数为1/2.2≈0.455",
+            update=changeViewMode)
 
         # 注册吸色模式布尔开关
         def changeGetColorMode(self, context):

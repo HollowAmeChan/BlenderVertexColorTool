@@ -1,8 +1,9 @@
-import bpy
-from bpy.types import Operator
-import mathutils
-import random
 import time
+import random
+import mathutils
+from bpy.types import Operator
+import bpy
+import bmesh
 
 
 DEFAULT_COLOR_GROUP1 = [
@@ -296,43 +297,11 @@ class quitVertexColorView(Operator):
 
     def execute(self, context):
         context.scene.ho_GetVertexColorViewMode = 0
-        context.scene.view_settings.view_transform = 'Filmic'
+        context.scene.view_settings.view_transform = 'Standard'
         context.space_data.overlay.show_overlays = True
         context.space_data.shading.light = 'STUDIO'
         context.space_data.shading.color_type = 'MATERIAL'
         context.space_data.shading.background_type = 'THEME'
-        return {'FINISHED'}
-
-
-class enterGetVertexColorView(Operator):
-    """
-    进入吸色模式
-    """
-    bl_idname = "ho.entergetvertexcolorview"
-    bl_label = "进入吸色模式"
-
-    @classmethod
-    def poll(cls, context):
-        return True
-
-    def execute(self, context):
-        context.scene.display_settings.display_device = 'None'
-        return {'FINISHED'}
-
-
-class quitGetVertexColorView(Operator):
-    """
-    退出吸色模式
-    """
-    bl_idname = "ho.quitgetvertexcolorview"
-    bl_label = "从吸色模式中退出"
-
-    @classmethod
-    def poll(cls, context):
-        return True
-
-    def execute(self, context):
-        context.scene.display_settings.display_device = 'sRGB'
         return {'FINISHED'}
 
 # 工具操作
@@ -629,7 +598,6 @@ cls = [addTempVertexCol, removeTempVertexCol,
        set2DefaultVertexCol,
        set3DefaultVertexCol,
        enterVertexColorView, quitVertexColorView,
-       enterGetVertexColorView, quitGetVertexColorView,
        setMeshVertexColor, chooseSameVertexColorMesh,
        vertexGroup2RandomVertexColor, vertexGroup2DefaultVertexColor, vertexWeight2vertexColor,
        vertexColorChannelCombine]
